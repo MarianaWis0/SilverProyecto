@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silver.demo.model.Videojuego;
-import com.silver.demo.repository.service.VideojuegoService;
+import com.silver.demo.service.VideojuegoService;
 
 @RestController
 @RequestMapping("/api/videojuegos")

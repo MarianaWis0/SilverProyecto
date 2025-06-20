@@ -1,4 +1,4 @@
-package com.silver.demo.repository.serviceImpl;
+package com.silver.demo.serviceImpl;
 
 import java.util.*;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.silver.demo.model.Videojuego;
 import com.silver.demo.repository.VideojuegoRepository;
-import com.silver.demo.repository.service.VideojuegoService;
+import com.silver.demo.service.VideojuegoService;
 
 @Service
 public class VideojuegoServiceImpl implements VideojuegoService {
