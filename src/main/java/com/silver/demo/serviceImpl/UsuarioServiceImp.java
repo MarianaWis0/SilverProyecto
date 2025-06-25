@@ -1,5 +1,6 @@
 package com.silver.demo.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.silver.demo.dto.UsuarioDTO;
+import com.silver.demo.dto.UsuarioResponseDTO;
 import com.silver.demo.model.Rol;
 import com.silver.demo.model.Usuario;
 import com.silver.demo.repository.RolRepository;
@@ -35,13 +37,29 @@ public class UsuarioServiceImp implements UsuarioService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado) {
+	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado, String rol) {
 		Map<String, Object> respuesta = new HashMap<>();
-		List<Usuario> usuarios = usuarioRepo.findAllByEstado(estado);
+		List<Usuario> usuarios = new ArrayList<>();
 		
-		if (!usuarios.isEmpty()) {
+		if (rol != null && !rol.trim().isEmpty()) {
+			usuarios = usuarioRepo.findByEstadoAndRolNombre(estado, rol);
+		} else {
+			usuarios = usuarioRepo.findAllByEstado(estado);
+		}
+		
+		List<UsuarioResponseDTO> uDTOs = usuarios.stream().map(usuario -> {
+			UsuarioResponseDTO dto = new UsuarioResponseDTO();
+			dto.setId(usuario.getId());
+			dto.setNombre(usuario.getNombre());
+	        dto.setEmail(usuario.getEmail());
+	        dto.setEstado(usuario.getEstado());
+	        dto.setRol(usuario.getRol().getNombre());
+	        return dto;
+		}).toList();
+		
+		if (!uDTOs.isEmpty()) {
 			respuesta.put("mensaje", "Usuarios encontrados");
-			respuesta.put("usuarios", usuarios);
+			respuesta.put("usuarios", uDTOs);
 			respuesta.put("fecha", new Date());
 			respuesta.put("estado", HttpStatus.OK);
 			
@@ -111,8 +129,10 @@ public class UsuarioServiceImp implements UsuarioService{
 				return ResponseEntity.status(HttpStatus.CONFLICT).body(respuesta);
 			}
 			
-			if (!passwordEncoder.matches(dto.getPassword(), usuarioExistente.getPassword())) {
-				usuarioExistente.setPassword(passwordEncoder.encode(dto.getPassword()));
+			if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+			    if (!passwordEncoder.matches(dto.getPassword(), usuarioExistente.getPassword())) {
+			        usuarioExistente.setPassword(passwordEncoder.encode(dto.getPassword()));
+			    }
 			}
 			
 			usuarioExistente.setNombre(TextoUtils.formatoPrimeraLetraMayuscula(dto.getNombre()));

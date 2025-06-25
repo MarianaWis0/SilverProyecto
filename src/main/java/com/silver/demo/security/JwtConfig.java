@@ -11,15 +11,22 @@ public class JwtConfig {
 	@Value("${jwt.secret}")
 	private String secret;
 	
-	@Value("${jwt.expiration}")
-	private Long expiration;
+	@Value("${jwt.access-token-expiration}")
+	private Long accessTokenExpiration;
+
+	@Value("${jwt.refresh-token-expiration}")
+	private Long refreshTokenExpiration;
 
 	public String getSecret() {
 		return secret;
 	}
 
-	public Long getExpiration() {
-		return expiration;
+	public Long getAccessTokenExpiration() {
+		return accessTokenExpiration;
+	}
+
+	public Long getRefreshTokenExpiration() {
+		return refreshTokenExpiration;
 	}
 
 }

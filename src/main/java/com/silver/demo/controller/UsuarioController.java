@@ -30,8 +30,8 @@ public class UsuarioController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/listado")
-	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(@RequestParam String estado) {
-		return service.listarUsuariosPorEstado(estado);
+	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(@RequestParam String estado, @RequestParam(required = false) String rol) {
+		return service.listarUsuariosPorEstado(estado, rol);
 	}
 	
 	@PostMapping("/registro")
@@ -39,6 +39,7 @@ public class UsuarioController {
 		return service.crearUsuario(dto);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	@PutMapping("/actualizacion/{id}")
 	public ResponseEntity<Map<String, Object>> actualizarUsuario(@RequestBody @Valid UsuarioDTO dto, @PathVariable Long id) {
 		return service.actualizarUsuario(dto, id);

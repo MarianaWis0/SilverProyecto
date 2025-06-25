@@ -10,10 +10,11 @@ import com.silver.demo.dto.UsuarioDTO;
 public interface UsuarioService {
 
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado);
+	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado, String rol);
 
 	public ResponseEntity<Map<String, Object>> crearUsuario(UsuarioDTO dto);
 
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<Map<String, Object>> actualizarUsuario(UsuarioDTO dto, Long id);
 
 	@PreAuthorize("hasRole('ADMIN')")

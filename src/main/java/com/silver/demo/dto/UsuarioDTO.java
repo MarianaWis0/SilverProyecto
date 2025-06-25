@@ -17,7 +17,6 @@ public class UsuarioDTO {
     @Email(message = "Formato de correo inválido")
 	private String email;
 
-	@NotBlank(message = "La contraseña es obligatoria")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     @Pattern(
         regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$",
