@@ -36,7 +36,7 @@ public class JwtUtils {
             .collect(Collectors.toList());
 
         claims.put("roles", roles);
-
+        
         return buildToken(userDetails.getUsername(), jwtConfig.getAccessTokenExpiration(), claims);
     }
 

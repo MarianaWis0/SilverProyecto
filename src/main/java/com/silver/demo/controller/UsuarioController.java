@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.silver.demo.dto.UsuarioDTO;
+import com.silver.demo.dto.UsuarioRequestDTO;
 import com.silver.demo.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class UsuarioController {
 		return service.crearUsuario(dto);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('USER')")
 	@PutMapping("/actualizacion/{id}")
 	public ResponseEntity<Map<String, Object>> actualizarUsuario(@RequestBody @Valid UsuarioDTO dto, @PathVariable Long id) {
 		return service.actualizarUsuario(dto, id);
@@ -55,5 +56,11 @@ public class UsuarioController {
 	@PutMapping("/reactivacion/{id}")
 	public ResponseEntity<Map<String, Object>> reactivarUsuario(@PathVariable Long id) {
 		return service.reactivarUsuario(id);
+	}
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PutMapping("/actualizacionAdmin/{id}")
+	public ResponseEntity<Map<String, Object>> actualizarUsuarioAdmin(@RequestBody @Valid UsuarioRequestDTO dto,@PathVariable Long id) {
+		return service.actualizarUsuarioAdmin(dto, id);
 	}
 }

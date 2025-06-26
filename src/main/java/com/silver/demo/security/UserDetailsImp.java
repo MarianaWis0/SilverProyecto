@@ -52,6 +52,6 @@ public class UserDetailsImp implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-    	return usuario.getEstado().equalsIgnoreCase("A");
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.silver.demo.dto.UsuarioDTO;
+import com.silver.demo.dto.UsuarioRequestDTO;
 
 public interface UsuarioService {
 
@@ -14,8 +15,11 @@ public interface UsuarioService {
 
 	public ResponseEntity<Map<String, Object>> crearUsuario(UsuarioDTO dto);
 
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Map<String, Object>> actualizarUsuario(UsuarioDTO dto, Long id);
+	
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<Map<String, Object>> actualizarUsuarioAdmin(UsuarioRequestDTO dto, Long id);
 
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Map<String, Object>> desactivarUsuario(Long id);

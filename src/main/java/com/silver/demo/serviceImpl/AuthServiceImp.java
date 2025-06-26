@@ -3,6 +3,7 @@ package com.silver.demo.serviceImpl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import com.silver.demo.dto.Auth;
 import com.silver.demo.dto.RefreshTokenRequest;
+import com.silver.demo.model.Usuario;
+import com.silver.demo.repository.UsuarioRepository;
 import com.silver.demo.service.AuthService;
 import com.silver.demo.utils.JwtUtils;
 
@@ -30,10 +33,22 @@ public class AuthServiceImp implements AuthService{
 	@Autowired
 	private UserDetailsServiceImp udService;
 	
+	@Autowired
+	private UsuarioRepository uService;
+	
 	@Override
 	public ResponseEntity<Map<String, Object>> login(Auth a) {
 	    Map<String, Object> respuesta = new HashMap<>();
+		Optional<Usuario> u = uService.findByEmailIgnoreCase(a.getEmail());
 		
+		Optional<Usuario> admin = uService.findById((long) 1);
+	    
+		if (u.isPresent() && !"A".equalsIgnoreCase(u.get().getEstado())) {
+		    respuesta.put("mensaje", "Usuario eliminado. Para recuperar la cuenta, contacte al administrador: " + admin.get().getEmail());
+		    respuesta.put("fecha", new Date());
+		    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(respuesta);
+		}
+	    
 		Authentication auth = authManager
 				.authenticate(new UsernamePasswordAuthenticationToken(a.getEmail(), a.getPassword()));
 
