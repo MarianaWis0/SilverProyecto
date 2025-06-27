@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.silver.demo.security.JwtConfig;
+import com.silver.demo.security.UserDetailsImp;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -36,6 +37,10 @@ public class JwtUtils {
             .collect(Collectors.toList());
 
         claims.put("roles", roles);
+        
+        if (userDetails instanceof UserDetailsImp) {
+            claims.put("nombre", ((UserDetailsImp) userDetails).getUsuario().getNombre());
+        }
         
         return buildToken(userDetails.getUsername(), jwtConfig.getAccessTokenExpiration(), claims);
     }

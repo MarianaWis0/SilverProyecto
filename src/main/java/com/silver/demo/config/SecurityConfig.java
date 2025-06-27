@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/usuario/registro").permitAll()
                 .requestMatchers("/api/videojuegos/lista").permitAll()
+                .requestMatchers("/api/categorias/lista").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(udService)
@@ -61,7 +62,7 @@ public class SecurityConfig {
 	public CorsFilter corsFilter() {
 	    CorsConfiguration config = new CorsConfiguration();
 	    config.setAllowCredentials(true);
-	    config.addAllowedOrigin("http://localhost:4200"); // el origen de tu frontend
+	    config.addAllowedOrigin("http://localhost:4200");
 	    config.addAllowedHeader("*");
 	    config.addAllowedMethod("*");
 
@@ -71,10 +72,11 @@ public class SecurityConfig {
 	    return new CorsFilter(source);
 	}
     
-	/*
-	 * //METODO PARA ENCRYPTAR Y VER LA PASSWORD public static void main(String[]
-	 * args) { System.out.println("Pasword: "+ new
-	 * BCryptPasswordEncoder().encode("Piero123@")); }
-	 */
+	
+//	// METODO PARA ENCRYPTAR Y VER LA PASSWORD
+//	public static void main(String[] args) {
+//		System.out.println("Password: " + new BCryptPasswordEncoder().encode("Piero123@"));
+//	}
+	 
 	
 }

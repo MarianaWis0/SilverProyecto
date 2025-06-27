@@ -1,6 +1,5 @@
 package com.silver.demo.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -14,7 +13,7 @@ public class UsuarioRequestDTO {
 	private String nombre;
 
 	@NotBlank(message = "El correo es obligatorio")
-    @Email(message = "Formato de correo inválido")
+	@Pattern(regexp = "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Formato de email inválido")
 	private String email;
 
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")

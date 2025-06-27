@@ -31,8 +31,11 @@ public class UsuarioController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/listado")
-	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(@RequestParam String estado, @RequestParam(required = false) String rol) {
-		return service.listarUsuariosPorEstado(estado, rol);
+	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(@RequestParam String estado,
+			@RequestParam(required = false) String rol, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(required = false, defaultValue = "") String textoBusqueda) {
+		return service.listarUsuariosPorEstado(estado, rol, page, size, textoBusqueda);
 	}
 	
 	@PostMapping("/registro")

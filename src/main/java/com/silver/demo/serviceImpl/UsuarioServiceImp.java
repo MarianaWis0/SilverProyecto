@@ -1,12 +1,14 @@
 package com.silver.demo.serviceImpl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,38 +40,56 @@ public class UsuarioServiceImp implements UsuarioService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado, String rol) {
+	public ResponseEntity<Map<String, Object>> listarUsuariosPorEstado(String estado, String rol, int page, int size,
+			String textoBusqueda) {
 		Map<String, Object> respuesta = new HashMap<>();
-		List<Usuario> usuarios = new ArrayList<>();
-		
-		if (rol != null && !rol.trim().isEmpty()) {
-			usuarios = usuarioRepo.findByEstadoAndRolNombre(estado, rol);
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Usuario> usuariosPage;
+
+		boolean hayRol = rol != null && !rol.trim().isEmpty();
+		boolean hayBusqueda = textoBusqueda != null && !textoBusqueda.trim().isEmpty();
+
+		if (hayBusqueda) {
+			String termino = "%" + textoBusqueda.toLowerCase() + "%";
+
+			if (hayRol) {
+				usuariosPage = usuarioRepo.buscarPorEstadoRolYNombreOEmail(estado, rol, termino, pageable);
+			} else {
+				usuariosPage = usuarioRepo.buscarPorEstadoYNombreOEmail(estado, termino, pageable);
+			}
+
 		} else {
-			usuarios = usuarioRepo.findAllByEstado(estado);
+			if (hayRol) {
+				usuariosPage = usuarioRepo.findByEstadoAndRolNombre(estado, rol, pageable);
+			} else {
+				usuariosPage = usuarioRepo.findAllByEstado(estado, pageable);
+			}
 		}
-		
-		List<UsuarioResponseDTO> uDTOs = usuarios.stream().map(usuario -> {
+
+		List<UsuarioResponseDTO> uDTOs = usuariosPage.stream().map(usuario -> {
 			UsuarioResponseDTO dto = new UsuarioResponseDTO();
 			dto.setId(usuario.getId());
 			dto.setNombre(usuario.getNombre());
-	        dto.setEmail(usuario.getEmail());
-	        dto.setEstado(usuario.getEstado());
-	        dto.setRol(usuario.getRol().getNombre());
-	        return dto;
+			dto.setEmail(usuario.getEmail());
+			dto.setEstado(usuario.getEstado());
+			dto.setRol(usuario.getRol().getNombre());
+			return dto;
 		}).toList();
-		
+
 		if (!uDTOs.isEmpty()) {
 			respuesta.put("mensaje", "Usuarios encontrados");
 			respuesta.put("usuarios", uDTOs);
+			respuesta.put("currentPage", usuariosPage.getNumber());
+			respuesta.put("totalItems", usuariosPage.getTotalElements());
+			respuesta.put("totalPages", usuariosPage.getTotalPages());
 			respuesta.put("fecha", new Date());
 			respuesta.put("estado", HttpStatus.OK);
-			
+
 			return ResponseEntity.status(HttpStatus.OK).body(respuesta);
 		} else {
-			respuesta.put("mensaje", "No se encontraron usuarios con el estado seleccionado");
+			respuesta.put("mensaje", "No se encontraron usuarios con los criterios seleccionados");
 			respuesta.put("fecha", new Date());
 			respuesta.put("estado", HttpStatus.NOT_FOUND);
-			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
 		}
 	}

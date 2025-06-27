@@ -80,9 +80,10 @@ public class AuthServiceImp implements AuthService{
 		UserDetails userDetails = udService.loadUserByUsername(username);
 
 		String newAccessToken = jwtUtils.generateAccessToken(userDetails);
+		String newRefreshToken = jwtUtils.generateRefreshToken(userDetails);
 
 		respuesta.put("accessToken", newAccessToken);
-		respuesta.put("refreshToken", refreshToken);
+		respuesta.put("refreshToken", newRefreshToken);
 		respuesta.put("tokenType", "Bearer");
 		respuesta.put("fecha", new Date());
 

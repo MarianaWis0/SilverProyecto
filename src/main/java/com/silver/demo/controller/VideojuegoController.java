@@ -25,32 +25,36 @@ public class VideojuegoController {
 	@Autowired
     private VideojuegoService videojuegoService;
 
-	
     @GetMapping("/lista")
     public ResponseEntity<Map<String, Object>> listarVideojuegos() {
         return videojuegoService.listarVideojuego();
     }
 
+    // @PreAuthorize("hasRole('ADMIN')") - FALTA DEFINIR QUIEN USARIA ESTE METODO
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> obtenerVideojuegoPorId(@PathVariable Long id) {
         return videojuegoService.listarVideojuegoId(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Map<String, Object>> agregarVideojuego(@RequestBody Videojuego videojuego) {
         return videojuegoService.agregarVideojeugo(videojuego);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> editarVideojuego(@RequestBody Videojuego videojuego, @PathVariable Long id) {
         return videojuegoService.editarVideojuego(videojuego, id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<Map<String, Object>> eliminarLogico(@PathVariable Long id) {
         return videojuegoService.eliminarLogicoVideojuego(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/estado") //// estado?estados=A - I - F
     public ResponseEntity<Map<String, Object>> filtrarPorEstado(@RequestParam List<String> estados) {
         return videojuegoService.EstadoVideojuego(estados);
