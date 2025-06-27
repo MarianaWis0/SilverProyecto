@@ -17,7 +17,7 @@ public class PedidoController {
 	@Autowired
 	private PedidoService service;
 	
-	@GetMapping
+	@GetMapping("/lista")
     public ResponseEntity<Map<String, Object>> listar() {
         return service.listarPedidos();
     }

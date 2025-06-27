@@ -24,7 +24,7 @@ public class CategoriaController {
 	private CategoriaServiceImpl cateService;
 	
 	
-	@GetMapping
+	@GetMapping("/lista")
 	public ResponseEntity<Map<String , Object >> lista(){
 		return cateService.listaCategorias();	
 		}

@@ -39,6 +39,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/login").permitAll()
                 .requestMatchers("/api/usuario/registro").permitAll()
+                .requestMatchers("/api/videojuegos/lista").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(udService)

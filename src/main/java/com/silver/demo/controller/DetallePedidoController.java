@@ -24,7 +24,7 @@ public class DetallePedidoController {
     private DetallePedidoService detalleService;
 	
 	// Listar todos los detalles
-    @GetMapping
+    @GetMapping("/lista")
     public ResponseEntity<Map<String, Object>> listarDetalles() {
         return detalleService.listarDetalles();
     }
