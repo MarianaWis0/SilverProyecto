@@ -12,5 +12,6 @@ import com.silver.demo.model.Videojuego;
 public interface VideojuegoRepository extends JpaRepository<Videojuego, Long>{
 
 	List<Videojuego> findByEstadoIn(List<String> estado);
+	List<Videojuego> findByCategoriaId(Long categoriaId);
 
 }

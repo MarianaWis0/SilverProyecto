@@ -35,6 +35,30 @@ public class VideojuegoServiceImpl implements VideojuegoService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
         }
     }
+    
+    
+    
+    @Override
+    public ResponseEntity<Map<String, Object>> listarPorCategoriaId(Long categoriaId) {
+        Map<String, Object> respuesta = new HashMap<>();
+        List<Videojuego> videojuegos = dao.findByCategoriaId(categoriaId);
+
+        if (!videojuegos.isEmpty()) {
+            respuesta.put("mensaje", "Videojuegos de la categoría con ID: " + categoriaId);
+            respuesta.put("videojuegos", videojuegos);
+            respuesta.put("status", HttpStatus.OK);
+            respuesta.put("fecha", new Date());
+            return ResponseEntity.ok().body(respuesta);
+        } else {
+            respuesta.put("mensaje", "No se encontraron videojuegos para la categoría con ID: " + categoriaId);
+            respuesta.put("status", HttpStatus.NOT_FOUND);
+            respuesta.put("fecha", new Date());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
+        }
+    }
+
+    
+    
 
     @Override
     public ResponseEntity<Map<String, Object>> listarVideojuegoId(Long id) {

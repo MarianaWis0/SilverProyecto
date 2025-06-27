@@ -35,6 +35,12 @@ public class VideojuegoController {
     public ResponseEntity<Map<String, Object>> obtenerVideojuegoPorId(@PathVariable Long id) {
         return videojuegoService.listarVideojuegoId(id);
     }
+    
+    @GetMapping("/categoria/{id}")
+    public ResponseEntity<Map<String, Object>> listarPorCategoria(@PathVariable Long id) {
+        return videojuegoService.listarPorCategoriaId(id);
+    }
+
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

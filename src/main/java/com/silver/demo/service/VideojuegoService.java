@@ -16,6 +16,9 @@ public interface VideojuegoService {
 	// @PreAuthorize("hasRole('ADMIN')") - FALTA DEFINIR QUIEN USARIA ESTE METODO
 	public ResponseEntity<Map<String, Object>> listarVideojuegoId(Long id);
 	
+	ResponseEntity<Map<String, Object>> listarPorCategoriaId(Long categoriaId);
+
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Map<String, Object>> agregarVideojeugo(Videojuego videojuego);
 	
