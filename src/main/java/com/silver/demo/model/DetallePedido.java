@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 @Data
@@ -33,18 +34,12 @@ public class DetallePedido {
 	@JsonIgnoreProperties({ "categoria", "hibernateLazyInitializer" })
 	private Videojuego videojuego;
 
+	@Min(value = 1, message = "La cantidad debe ser al menos 1")
 	private Integer cantidad; // nº unidades
+	
 	@Column(name = "precio_unitario")
 	private Double precioUnitario; // copia del precio en el momento de la compra
 
-	/**
-	 * Si el precio no viene en el JSON, copiamos el precio actual del videojuego
-	 */
-	@PrePersist
-	public void precalcularPrecio() {
-		if (precioUnitario == null && videojuego != null) {
-			precioUnitario = videojuego.getPrecio();
-		}
-	}
+
 
 }

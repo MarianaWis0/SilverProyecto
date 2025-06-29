@@ -4,11 +4,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import com.silver.demo.model.Pedido;
+import com.silver.demo.dto.PedidoRequestDTO;
 import com.silver.demo.service.PedidoService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -27,19 +30,24 @@ public class PedidoController {
         return service.listarPedidoPorId(id);
     }
 	
-	@PostMapping
-    public ResponseEntity<Map<String, Object>> agregar(@Validated @RequestBody Pedido pedido) {
-        return service.agregarPedido(pedido);
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/agregar")
+    public ResponseEntity<Map<String, Object>> agregar(@Valid @RequestBody PedidoRequestDTO pedidoRequest) {
+        return service.agregarPedido(pedidoRequest);
     }
 	
-	@PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> editar(@RequestBody Pedido pedido, @PathVariable Long id) {
-        return service.editarPedido(pedido, id);
-    }
-	
-	@DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> eliminar(@PathVariable Long id) {
-        return service.eliminarPedido(id);
-    }
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<Map<String, Object>> editarPedido(
+	        @Valid @RequestBody PedidoRequestDTO pedidoRequest,
+	        @PathVariable Long id) {
+	    return service.editarPedido(pedidoRequest, id);
+	}
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@DeleteMapping("/eliminar/{pedidoId}")
+	public ResponseEntity<Map<String, Object>> eliminarPedido(@PathVariable Long pedidoId) {
+	    return service.eliminarPedido(pedidoId);
+	}
 	
 }

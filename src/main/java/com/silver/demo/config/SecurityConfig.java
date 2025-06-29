@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/usuario/registro").permitAll()
                 .requestMatchers("/api/videojuegos/lista").permitAll()
                 .requestMatchers("/api/categorias/lista").permitAll()
+                .requestMatchers("/api/pedidos").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(udService)

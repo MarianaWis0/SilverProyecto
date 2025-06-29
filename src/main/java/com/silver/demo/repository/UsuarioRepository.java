@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.silver.demo.model.Pedido;
 import com.silver.demo.model.Usuario;
 
 @Repository
@@ -32,4 +33,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 			+ "(LOWER(u.nombre) LIKE LOWER(:busqueda) OR LOWER(u.email) LIKE LOWER(:busqueda))")
 	Page<Usuario> buscarPorEstadoYNombreOEmail(@Param("estado") String estado, @Param("busqueda") String textoBusqueda,
 			Pageable pageable);
+
 }
