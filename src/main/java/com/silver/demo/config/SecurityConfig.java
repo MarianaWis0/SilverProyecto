@@ -43,6 +43,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/categorias/lista").permitAll()
                 .requestMatchers("/api/catalogo/categoria/**", "/api/catalogo/categorias", "/api/catalogo/listado/**").permitAll()
                 .requestMatchers("/api/pedidos").permitAll()
+                .requestMatchers("/api/foro").permitAll()
                 .anyRequest().authenticated()
             )
             .userDetailsService(udService)
