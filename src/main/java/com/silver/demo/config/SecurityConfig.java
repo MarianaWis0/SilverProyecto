@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/usuario/registro").permitAll()
                 .requestMatchers("/api/videojuegos/lista").permitAll()
                 .requestMatchers("/api/categorias/lista").permitAll()
+                .requestMatchers("/api/catalogo/categoria/**", "/api/catalogo/categorias", "/api/catalogo/listado/**").permitAll()
                 .requestMatchers("/api/pedidos").permitAll()
                 .anyRequest().authenticated()
             )
