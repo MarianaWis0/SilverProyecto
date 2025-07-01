@@ -11,7 +11,7 @@ public class RespuestaDto {
     private Long autorId;
     private LocalDateTime fecha;
     private String autorUsername;
-    
+    private Long temaId;
 
 
 }

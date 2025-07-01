@@ -87,6 +87,7 @@ public class TemaController {
 	    vista.setFecha(guardada.getFecha());
 	    vista.setAutorId(usuario.getId());
 	    vista.setAutorUsername(usuario.getNombre());
+	    vista.setTemaId(temaId);
 
 	    messagingTemplate.convertAndSend("/topic/respuestas", vista); 
 
