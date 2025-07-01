@@ -63,7 +63,7 @@ public class TemaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(salida);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	@PostMapping("/addRespuestas/{temaId}")
 	public ResponseEntity<RespuestaDto> agregarRespuesta(@PathVariable Long temaId, @RequestBody RespuestaDto dto) {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -93,7 +93,7 @@ public class TemaController {
 	    return ResponseEntity.ok(vista);
 	}
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	@GetMapping("/lista")
 	public ResponseEntity<List<TemaDto>> listarTemas() {
 	    List<Tema> temas = temaRepository.findAll(Sort.by(Sort.Direction.DESC, "fechaCreacion"));
@@ -132,7 +132,7 @@ public class TemaController {
 	}
 
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	@GetMapping("/temas/{id}")
 	public ResponseEntity<TemaDto> verTema(@PathVariable Long id) {
 	    return temaRepository.findById(id).map(tema -> {
