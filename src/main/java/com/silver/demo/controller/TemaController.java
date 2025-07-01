@@ -72,7 +72,6 @@ public class TemaController {
 	    Tema tema = temaRepository.findById(temaId).orElseThrow();
 
 	    Respuesta respuesta = new Respuesta();
-	    respuesta.setId(tema.getId());
 	    respuesta.setContenido(dto.getContenido());
 	    respuesta.setFecha(LocalDateTime.now());
 	    respuesta.setAutor(usuario);
